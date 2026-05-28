@@ -3,16 +3,17 @@ import Navbar from "../components/Navbar";
 import "../stylesheets/Dashboard.css";
 
 function Dashboard() {
+  const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+  const firstName = currentUser?.name?.split(" ")[0] || "User";
+
   return (
     <>
       <Navbar />
 
       <div className="dashboard-page">
-
-        {/* HERO SECTION */}
         <div className="dashboard-hero">
           <div>
-            <h1>Welcome back, Bharath 👋</h1>
+            <h1>Welcome back, {firstName} 👋</h1>
 
             <p>
               Monitor your skin health, track AI screenings,
@@ -20,6 +21,7 @@ function Dashboard() {
             </p>
           </div>
 
+ 
           <div className="hero-buttons">
             <Link to="/scan" className="hero-btn-primary">
               + New Scan
@@ -31,7 +33,7 @@ function Dashboard() {
           </div>
         </div>
 
-        {/* STATISTICS */}
+        
         <div className="stats-grid">
 
           <div className="stat-card">
@@ -56,7 +58,7 @@ function Dashboard() {
 
         </div>
 
-        {/* RECENT ACTIVITY */}
+        
         <div className="activity-section">
 
           <div className="activity-card">
