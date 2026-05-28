@@ -18,8 +18,10 @@ const upload = multer({ storage });
 
 router.post("/upload", upload.single("image"), async (req, res) => {
   try {
-    const imageUrl = `http://localhost:5000/uploads/${req.file.filename}`;
+    const backendUrl =
+  process.env.BACKEND_URL || "http://localhost:5000";
 
+const imageUrl = `${backendUrl}/uploads/${req.file.filename}`;
     const scan = await Scan.create({
       userId: req.body.userId,
       imageUrl,
