@@ -1,55 +1,10 @@
 # DermaCure AI
 
-DermaCure AI is an AI-powered skin screening and dermatologist appointment booking web application developed using the MERN Stack and TensorFlow.js.
+DermaCure AI is a full-stack AI-powered skin screening and dermatologist appointment booking web application developed using the MERN Stack and TensorFlow.js.
 
-The idea behind this project is to help users perform a basic AI-based skin analysis by uploading a skin image and getting possible skin condition predictions along with severity levels, suggestions, and dermatologist recommendations.
+The goal of this project is to help users perform a basic AI-powered skin analysis by uploading a skin image and receiving a possible skin condition prediction along with severity analysis, AI suggestions, and dermatologist recommendations.
 
-This project combines frontend development, backend APIs, database management, authentication, image uploads, and AI integration into one complete full-stack application.
-
----
-
-# Features
-
-## User Authentication
-
-* User Registration
-* User Login
-* Role Selection (Patient / Doctor)
-* JWT-based Authentication
-* Password hashing using bcrypt
-
----
-
-## AI Skin Analysis
-
-* Upload skin images
-* Capture images using device camera
-* TensorFlow.js AI model integration
-* Teachable Machine image classification
-* AI confidence percentage
-* Severity analysis
-* AI suggestions and recommendations
-* Recommended skincare products
-* Doctor consultation recommendation
-
----
-
-## Dermatologist Appointment System
-
-* View dermatologist profiles
-* Dynamic doctor booking page
-* Book appointments
-* Cancel appointments
-* View all booked appointments
-
----
-
-## Dashboard
-
-* User dashboard
-* Statistics overview
-* Recent activity section
-* Quick action buttons
+This project combines frontend development, backend API development, authentication, image uploads, MongoDB integration, and AI model integration into a single real-world healthcare application.
 
 ---
 
@@ -58,9 +13,10 @@ This project combines frontend development, backend APIs, database management, a
 ## Frontend
 
 * React.js
+* Vite
 * React Router DOM
-* Tailwind CSS
 * Axios
+* CSS
 * TensorFlow.js
 * Teachable Machine
 
@@ -68,25 +24,79 @@ This project combines frontend development, backend APIs, database management, a
 
 * Node.js
 * Express.js
-* MongoDB
-* Mongoose
-* Multer
-* JWT
-* bcryptjs
-
-## Database
-
 * MongoDB Atlas
+* Mongoose
+* JWT Authentication
+* bcryptjs
+* Multer
+
+---
+
+# Features
+
+## Authentication System
+
+The application includes a complete authentication system with user registration and login functionality. Users can create accounts as patients or doctors, and passwords are securely encrypted using bcrypt. JWT authentication is used to manage login sessions securely.
+
+---
+
+## AI Skin Analysis
+
+Users can upload or capture skin images directly from their device. The uploaded image is analyzed using a TensorFlow.js model trained with Google Teachable Machine.
+
+The AI analysis provides:
+
+* Predicted skin condition
+* AI confidence percentage
+* Severity level
+* Suggested skincare recommendations
+* Recommended products
+* Dermatologist recommendation
+
+---
+
+## Dermatologist Appointment Booking
+
+Users can browse dermatologist profiles and dynamically book appointments based on doctor availability.
+
+The system supports:
+
+* Viewing dermatologist profiles
+* Dynamic booking forms
+* Appointment management
+* Appointment cancellation
+* MongoDB appointment storage
+
+---
+
+## Dashboard
+
+The dashboard provides:
+
+* Skin health overview
+* Scan statistics
+* Recent activities
+* Appointment summary
+* Quick actions
 
 ---
 
 # Project Structure
 
-```bash id="z3hkt1"
-DermaAI/
+```bash
+derma_ai/
 │
 ├── public/
 │   └── model/
+│
+├── screenshots/
+│
+├── server/
+│   ├── models/
+│   ├── routes/
+│   ├── uploads/
+│   ├── .env
+│   └── server.js
 │
 ├── src/
 │   ├── api/
@@ -96,23 +106,17 @@ DermaAI/
 │   ├── stylesheets/
 │   └── App.jsx
 │
-├── server/
-│   ├── models/
-│   ├── routes/
-│   ├── uploads/
-│   ├── .env
-│   └── server.js
-│
+├── package.json
 └── README.md
 ```
 
 ---
 
-# Installation
+# Installation Guide
 
-## Clone the repository
+## Clone the Repository
 
-```bash id="kr66q1"
+```bash
 git clone https://github.com/yourusername/dermacure-ai.git
 cd dermacure-ai
 ```
@@ -123,25 +127,25 @@ cd dermacure-ai
 
 Install frontend dependencies:
 
-```bash id="73y8fq"
+```bash
 npm install
 ```
 
-Install TensorFlow.js and Teachable Machine packages:
+Install TensorFlow.js packages:
 
-```bash id="mz7qfr"
+```bash
 npm install @tensorflow/tfjs @teachablemachine/image
 ```
 
-Run frontend:
+Run the frontend:
 
-```bash id="x33jui"
+```bash
 npm run dev
 ```
 
-Frontend will run on:
+Frontend runs on:
 
-```bash id="5gq42v"
+```bash
 http://localhost:5173
 ```
 
@@ -149,27 +153,27 @@ http://localhost:5173
 
 # Backend Setup
 
-Move into server folder:
+Move into the server directory:
 
-```bash id="t0fxij"
+```bash
 cd server
 ```
 
 Install backend dependencies:
 
-```bash id="q0ttci"
+```bash
 npm install
 ```
 
-Run backend server:
+Run the backend server:
 
-```bash id="t0fxyj"
+```bash
 npm run dev
 ```
 
 Backend runs on:
 
-```bash id="v5h8zn"
+```bash
 http://localhost:5000
 ```
 
@@ -177,9 +181,9 @@ http://localhost:5000
 
 # Environment Variables
 
-Create a `.env` file inside the `server` folder:
+Create a `.env` file inside the `server` folder and add:
 
-```env id="4g0gnv"
+```env
 PORT=5000
 MONGO_URI=your_mongodb_connection_string
 JWT_SECRET=your_secret_key
@@ -187,14 +191,14 @@ JWT_SECRET=your_secret_key
 
 ---
 
-# TensorFlow Model Setup
+# TensorFlow.js Model Setup
 
 This project uses a TensorFlow.js image classification model exported from Google Teachable Machine.
 
 ## Steps
 
-1. Create an Image Project in Teachable Machine
-2. Train skin condition classes such as:
+1. Create a Teachable Machine Image Project
+2. Train classes such as:
 
    * Acne
    * Rash
@@ -202,83 +206,130 @@ This project uses a TensorFlow.js image classification model exported from Googl
    * Dark Spots
    * Normal Skin
 3. Export the model as TensorFlow.js
-4. Place exported files inside:
+4. Place the exported files inside:
 
-```bash id="w2axrj"
+```bash
 public/model/
 ```
 
 Required files:
 
-```bash id="v8s2fk"
+```bash
 model.json
 metadata.json
 weights.bin
 ```
 
+The model is loaded directly in the React frontend using TensorFlow.js and performs image analysis inside the browser.
+
 ---
 
 # API Routes
 
-## Authentication
+## Authentication Routes
 
-```http id="u8z23x"
+```http
 POST /api/auth/register
 POST /api/auth/login
 ```
 
-## Appointments
+## Appointment Routes
 
-```http id="h4dj42"
+```http
 POST /api/appointments
 GET /api/appointments
 DELETE /api/appointments/:id
 ```
 
-## Skin Scans
+## Scan Routes
 
-```http id="yd28ka"
+```http
 POST /api/scans/upload
 GET /api/scans
 ```
 
 ---
 
+# Application Screenshots
+
+## Dashboard
+
+![Dashboard](./screenshots/dashboard.png)
+
+The dashboard provides quick access to AI scan statistics, health scores, appointments, and recent activity.
+
+---
+
+## Scan Skin Page
+
+![Scan Skin](./screenshots/scan-skin.png)
+
+Users can upload or capture skin images directly from their device and run AI-powered analysis.
+
+---
+
+## AI Scan Result Page
+
+![Scan Result](./screenshots/scan-result.png)
+
+The scan result page displays the predicted skin condition, confidence percentage, severity analysis, AI suggestions, and recommended products.
+
+---
+
+## Dermatologists Page
+
+![Doctors](./screenshots/doctors.png)
+
+Users can browse dermatologist profiles and dynamically book appointments based on doctor availability.
+
+---
+
+## My Appointments Page
+
+![My Appointments](./screenshots/myappointments.png)
+
+Booked appointments are stored in MongoDB and displayed dynamically for the user.
+
+---
+
 # Current Progress
 
-The following modules have been completed:
+The following modules have been completed successfully:
 
 * MERN Stack setup
 * MongoDB Atlas integration
 * Authentication system
-* Appointment booking system
-* Dynamic doctor pages
-* Image upload system
+* JWT login system
+* Dynamic appointment booking
+* Doctor pages
 * TensorFlow.js AI integration
-* Scan result analysis page
+* Image upload backend
+* AI scan result page
 * MongoDB scan storage
 * Responsive UI design
-* Dashboard and navigation system
+* Dashboard system
 
 ---
 
 # Future Improvements
 
-* Improve AI model accuracy
+Future enhancements planned for the project include:
+
+* Improved AI model accuracy
 * Doctor dashboard
 * Scan history analytics
 * Real-time notifications
-* Video consultations
 * Email verification
+* Video consultation support
 * Cloud image storage
-* Mobile responsiveness improvements
 * Deployment on Vercel and Render
+* Advanced medical AI integration
 
 ---
 
 # Disclaimer
 
-DermaCure AI is built for educational and project purposes only. The AI-generated results are not medical diagnoses. Users are advised to consult certified dermatologists for professional medical advice.
+DermaCure AI is developed for educational and project purposes only. The AI-generated results are not medical diagnoses and should not be considered professional healthcare advice. Users are encouraged to consult certified dermatologists for accurate diagnosis and treatment.
 
 ---
 
