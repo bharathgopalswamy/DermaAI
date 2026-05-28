@@ -1,0 +1,144 @@
+.appointments-page {
+  min-height: 100vh;
+  background: linear-gradient(to bottom right, #ecfeff, #ffffff, #d1fae5);
+  padding: 40px;
+}
+
+.appointments-header {
+  max-width: 1100px;
+  margin: 0 auto 32px;
+  background: white;
+  padding: 34px;
+  border-radius: 26px;
+  box-shadow: 0 18px 35px rgba(0, 0, 0, 0.08);
+}
+
+.appointments-header h1 {
+  font-size: 40px;
+  color: #111827;
+  margin-bottom: 10px;
+}
+
+.appointments-header p {
+  color: #6b7280;
+  font-size: 17px;
+}
+
+.empty-appointments {
+  max-width: 700px;
+  margin: 0 auto;
+  background: white;
+  padding: 42px;
+  border-radius: 26px;
+  text-align: center;
+  box-shadow: 0 18px 35px rgba(0, 0, 0, 0.08);
+}
+
+.empty-appointments h2 {
+  color: #111827;
+  margin-bottom: 10px;
+}
+
+.empty-appointments p {
+  color: #6b7280;
+}
+
+.appointments-grid {
+  max-width: 1100px;
+  margin: 0 auto;
+
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 28px;
+}
+
+.appointment-card {
+  background: white;
+  padding: 30px;
+  border-radius: 26px;
+  box-shadow: 0 18px 35px rgba(0, 0, 0, 0.08);
+}
+
+.appointment-top {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-bottom: 22px;
+}
+
+.doctor-icon {
+  width: 70px;
+  height: 70px;
+  background: #ccfbf1;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 34px;
+}
+
+.appointment-top h2 {
+  color: #111827;
+  margin-bottom: 6px;
+}
+
+.appointment-top p {
+  color: #0d9488;
+  font-weight: 700;
+}
+
+.appointment-details {
+  background: #f9fafb;
+  padding: 20px;
+  border-radius: 18px;
+}
+
+.appointment-details p {
+  color: #4b5563;
+  line-height: 1.8;
+}
+
+.appointment-status {
+  margin: 20px 0;
+}
+
+.appointment-status span {
+  background: #fef3c7;
+  color: #92400e;
+  padding: 10px 16px;
+  border-radius: 999px;
+  font-weight: 800;
+  font-size: 14px;
+}
+
+.cancel-btn {
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 14px;
+  background: #dc2626;
+  color: white;
+  font-weight: 800;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.cancel-btn:hover {
+  background: #b91c1c;
+}
+
+@media (max-width: 800px) {
+  .appointments-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 560px) {
+  .appointments-page {
+    padding: 20px;
+  }
+
+  .appointments-header h1 {
+    font-size: 30px;
+  }
+}

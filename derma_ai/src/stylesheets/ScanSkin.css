@@ -1,0 +1,149 @@
+.scan-page {
+  min-height: 100vh;
+  background: linear-gradient(to bottom right, #ecfeff, #ffffff, #d1fae5);
+  padding: 40px;
+}
+
+.scan-container {
+  max-width: 760px;
+  margin: 0 auto;
+  background: white;
+  padding: 42px;
+  border-radius: 28px;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.08);
+  text-align: center;
+}
+
+.scan-container h1 {
+  font-size: 42px;
+  color: #111827;
+  margin-bottom: 12px;
+}
+
+.scan-container > p {
+  color: #6b7280;
+  font-size: 17px;
+  line-height: 1.7;
+  margin-bottom: 32px;
+}
+
+.upload-box {
+  width: 100%;
+  height: 360px;
+  border: 2px dashed #0d9488;
+  border-radius: 24px;
+  background: #f0fdfa;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.upload-placeholder span {
+  font-size: 60px;
+}
+
+.upload-placeholder h3 {
+  color: #111827;
+  margin-top: 14px;
+  margin-bottom: 8px;
+}
+
+.upload-placeholder p {
+  color: #6b7280;
+}
+
+.preview-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.scan-actions {
+  display: flex;
+  justify-content: center;
+  gap: 18px;
+  margin-top: 28px;
+}
+
+.upload-btn,
+.camera-btn {
+  padding: 14px 24px;
+  border-radius: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.upload-btn {
+  background: #0d9488;
+  color: white;
+}
+
+.upload-btn:hover {
+  background: #0f766e;
+}
+
+.camera-btn {
+  border: 2px solid #0d9488;
+  color: #0d9488;
+  background: white;
+}
+
+.camera-btn:hover {
+  background: #f0fdfa;
+}
+
+.analyze-btn {
+  width: 100%;
+  margin-top: 28px;
+  padding: 16px;
+  border: none;
+  border-radius: 16px;
+  background: #111827;
+  color: white;
+  font-size: 17px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.analyze-btn:hover {
+  background: #0d9488;
+}
+
+.analyze-btn:disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
+}
+
+.scan-note {
+  margin-top: 26px;
+  background: #ecfeff;
+  padding: 18px;
+  border-radius: 16px;
+  color: #374151;
+  line-height: 1.7;
+  text-align: left;
+}
+
+@media (max-width: 600px) {
+  .scan-page {
+    padding: 20px;
+  }
+
+  .scan-container {
+    padding: 28px;
+  }
+
+  .scan-container h1 {
+    font-size: 32px;
+  }
+
+  .upload-box {
+    height: 280px;
+  }
+
+  .scan-actions {
+    flex-direction: column;
+  }
+}
