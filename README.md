@@ -117,8 +117,8 @@ derma_ai/
 ## Clone the Repository
 
 ```bash
-git clone https://github.com/yourusername/dermacure-ai.git
-cd dermacure-ai
+git clone https://github.com/bharathgopalswamy/DermaAI
+cd DermaAI
 ```
 
 ---
