@@ -25,7 +25,7 @@ function App() {
         <Route path="/scan-result" element={<ScanResult />} />
 
         <Route path="/doctors" element={<Doctors />} />
-        <Route path="/book-appointment/:doctorId" element={<BookAppointment />} />
+        <Route path="/book-appointment/:id" element={<BookAppointment />} />
         <Route path="/appointments" element={<MyAppointments />} />
 
         <Route path="/doctor-dashboard" element={<DoctorDashboard />} />

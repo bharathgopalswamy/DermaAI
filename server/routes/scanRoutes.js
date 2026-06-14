@@ -56,5 +56,23 @@ router.get("/", async (req, res) => {
     res.status(500).json({ message: "Failed to fetch scans", error });
   }
 });
+router.get("/latest/:userId", async (req, res) => {
+  try {
+    const scan = await Scan.findOne({
+      userId: req.params.userId,
+    }).sort({ createdAt: -1 });
+
+    if (!scan) {
+      return res.status(404).json({ message: "No scan found" });
+    }
+
+    res.json(scan);
+  } catch (error) {
+    res.status(500).json({
+      message: "Failed to fetch latest scan",
+      error: error.message,
+    });
+  }
+});
 
 module.exports = router;

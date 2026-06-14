@@ -59,6 +59,29 @@
   box-shadow: 0 18px 35px rgba(0, 0, 0, 0.08);
 }
 
+.doctor-recommendation-box {
+  background: #ecfdf5;
+  border-left: 5px solid #14b8a6;
+  padding: 18px;
+  border-radius: 14px;
+  margin: 18px 0;
+}
+
+.doctor-recommendation-box h3 {
+  color: #0f766e;
+  margin-bottom: 10px;
+  font-size: 18px;
+}
+
+.doctor-recommendation-box p {
+  color: #374151;
+  line-height: 1.7;
+  margin-bottom: 10px;  
+}
+
+.doctor-recommendation-box small {
+  color: #6b7280;
+}
 .appointment-top {
   display: flex;
   align-items: center;

@@ -27,7 +27,7 @@ function MyAppointments() {
       await API.delete(`/appointments/${id}`);
 
       const updatedAppointments = appointments.filter(
-        (appointment) => appointment._id !== id
+        (appointment) => appointment._id !== id,
       );
 
       setAppointments(updatedAppointments);
@@ -97,6 +97,20 @@ function MyAppointments() {
                 <div className="appointment-status">
                   <span>{appointment.status || "Pending Confirmation"}</span>
                 </div>
+
+                {appointment.doctorRecommendation && (
+                  <div className="doctor-recommendation-box">
+                    <h3>Doctor Recommendation</h3>
+                    <p>{appointment.doctorRecommendation}</p>
+
+                    {appointment.reviewedAt && (
+                      <small>
+                        Reviewed on{" "}
+                        {new Date(appointment.reviewedAt).toLocaleDateString()}
+                      </small>
+                    )}
+                  </div>
+                )}
 
                 <button
                   className="cancel-btn"

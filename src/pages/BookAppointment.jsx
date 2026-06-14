@@ -1,15 +1,16 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import Navbar from "../components/Navbar";
-import { doctors } from "../data/doctors";
 import API from "../api/axios";
 import "../stylesheets/BookAppointment.css";
 
 function BookAppointment() {
-  const { doctorId } = useParams();
+  const { id } = useParams();
   const navigate = useNavigate();
 
-  const doctor = doctors.find((doc) => doc.id === doctorId);
+  const [doctor, setDoctor] = useState(null);
+  const [doctorLoading, setDoctorLoading] = useState(true);
+  const [bookingLoading, setBookingLoading] = useState(false);
 
   const [formData, setFormData] = useState({
     patientName: "",
@@ -17,12 +18,34 @@ function BookAppointment() {
     reason: "",
     date: "",
     time: "",
+    allowDoctorToViewScan: false,
   });
 
   const [errors, setErrors] = useState({});
-  const [loading, setLoading] = useState(false);
 
-  const timeSlots = ["09:00 AM", "10:30 AM", "12:00 PM", "02:30 PM", "04:00 PM"];
+  const timeSlots = [
+    "09:00 AM",
+    "10:30 AM",
+    "12:00 PM",
+    "02:30 PM",
+    "04:00 PM",
+  ];
+
+  useEffect(() => {
+    const fetchDoctor = async () => {
+      try {
+        const response = await API.get(`/doctors/${id}`);
+        setDoctor(response.data);
+      } catch (error) {
+        console.log("Doctor fetch error:", error);
+        setDoctor(null);
+      } finally {
+        setDoctorLoading(false);
+      }
+    };
+
+    fetchDoctor();
+  }, [id]);
 
   const handleChange = (e) => {
     setFormData({
@@ -83,33 +106,76 @@ function BookAppointment() {
     if (!validateForm()) return;
 
     try {
-      setLoading(true);
+      setBookingLoading(true);
 
-      const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+  const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+
+let latestScan = null;
+
+try {
+  const scanResponse = await API.get(`/scans/latest/${currentUser._id}`);
+  latestScan = scanResponse.data;
+} catch (error) {
+  latestScan = JSON.parse(localStorage.getItem("latestScan"));
+}
 
       const appointmentData = {
         userId: currentUser?._id,
+        doctorId: doctor._id,
         doctorName: doctor.name,
-        specialization: doctor.specialization,
-        clinic: doctor.clinic,
+        specialization: doctor.specialization || "Dermatologist",
+        clinic: doctor.clinic || "DermaCure Clinic",
+
         patientName: formData.patientName,
         email: formData.email,
         reason: formData.reason,
         date: formData.date,
         time: formData.time,
+
+        allowDoctorToViewScan: formData.allowDoctorToViewScan,
+
+        sharedScanImage:
+          formData.allowDoctorToViewScan && latestScan
+            ? latestScan.imageUrl
+            : "",
+
+        sharedCondition:
+          formData.allowDoctorToViewScan && latestScan
+            ? latestScan.condition
+            : "",
+
+        sharedSeverity:
+          formData.allowDoctorToViewScan && latestScan
+            ? latestScan.severity
+            : "",
+
+        sharedConfidence:
+          formData.allowDoctorToViewScan && latestScan
+            ? latestScan.confidence
+            : 0,
       };
 
       const response = await API.post("/appointments", appointmentData);
 
       alert(response.data.message || "Appointment booked successfully!");
-
       navigate("/appointments");
     } catch (error) {
       alert(error.response?.data?.message || "Failed to book appointment");
     } finally {
-      setLoading(false);
+      setBookingLoading(false);
     }
   };
+
+  if (doctorLoading) {
+    return (
+      <>
+        <Navbar />
+        <div className="booking-page">
+          <h1>Loading doctor...</h1>
+        </div>
+      </>
+    );
+  }
 
   if (!doctor) {
     return (
@@ -139,11 +205,12 @@ function BookAppointment() {
               <div className="doctor-icon">👨‍⚕️</div>
 
               <div>
-                <h2>{doctor.name}</h2>
+                <h2>Dr. {doctor.name}</h2>
                 <p>
-                  {doctor.specialization} • {doctor.clinic}
+                  {doctor.specialization || "Dermatologist"} •{" "}
+                  {doctor.clinic || "DermaCure Clinic"}
                 </p>
-                <span>{doctor.location}</span>
+                <span>{doctor.location || "Online Consultation"}</span>
               </div>
             </div>
 
@@ -225,8 +292,28 @@ function BookAppointment() {
                 )}
               </div>
 
-              <button type="submit" className="confirm-btn" disabled={loading}>
-                {loading ? "Booking..." : "Confirm Appointment"}
+              <label className="share-scan-option">
+                <input
+                  type="checkbox"
+                  name="allowDoctorToViewScan"
+                  checked={formData.allowDoctorToViewScan}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      allowDoctorToViewScan: e.target.checked,
+                    })
+                  }
+                />
+                Allow this doctor to view my latest skin scan image and AI
+                result
+              </label>
+
+              <button
+                type="submit"
+                className="confirm-btn"
+                disabled={bookingLoading}
+              >
+                {bookingLoading ? "Booking..." : "Confirm Appointment"}
               </button>
             </form>
 

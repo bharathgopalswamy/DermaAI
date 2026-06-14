@@ -83,6 +83,9 @@
   flex-direction: column;
   gap: 20px;
 }
+.booking-form .share-scan-option {
+  flex-direction: row;
+}
 
 .booking-form label {
   color: #374151;
