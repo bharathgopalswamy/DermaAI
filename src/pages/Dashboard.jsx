@@ -1,10 +1,77 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Navbar from "../components/Navbar";
+import API from "../api/axios";
 import "../stylesheets/Dashboard.css";
 
 function Dashboard() {
   const currentUser = JSON.parse(localStorage.getItem("currentUser"));
   const firstName = currentUser?.name?.split(" ")[0] || "User";
+
+  const [scans, setScans] = useState([]);
+  const [appointments, setAppointments] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchDashboardData();
+  }, []);
+
+  const fetchDashboardData = async () => {
+    try {
+      const [scanResponse, appointmentResponse] = await Promise.all([
+        API.get("/scans"),
+        API.get("/appointments"),
+      ]);
+
+      const userScans = scanResponse.data.filter(
+        (scan) => scan.userId === currentUser?._id
+      );
+
+      const userAppointments = appointmentResponse.data.filter(
+        (appointment) => appointment.userId === currentUser?._id
+      );
+
+      setScans(userScans);
+      setAppointments(userAppointments);
+    } catch (error) {
+      console.log("Dashboard fetch error:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const totalScans = scans.length;
+
+  const averageConfidence =
+    scans.length > 0
+      ? Math.round(
+          scans.reduce(
+            (sum, scan) => sum + Number(scan.confidence || 0),
+            0
+          ) / scans.length
+        )
+      : 0;
+
+  const getHealthScore = () => {
+    if (scans.length === 0) return 100;
+
+    let score = 100;
+
+    scans.forEach((scan) => {
+      const severity = scan.severity?.toLowerCase();
+
+      if (severity === "severe") score -= 20;
+      else if (severity === "moderate") score -= 10;
+      else if (severity === "mild") score -= 5;
+    });
+
+    return Math.max(0, Math.min(score, 100));
+  };
+
+  const skinHealthScore = getHealthScore();
+
+  const latestScan = scans[0];
+  const latestAppointment = appointments[0];
 
   return (
     <>
@@ -16,12 +83,11 @@ function Dashboard() {
             <h1>Welcome back, {firstName} 👋</h1>
 
             <p>
-              Monitor your skin health, track AI screenings,
-              and connect with dermatologists.
+              Monitor your skin health, track AI screenings, and connect with
+              dermatologists.
             </p>
           </div>
 
- 
           <div className="hero-buttons">
             <Link to="/scan" className="hero-btn-primary">
               + New Scan
@@ -33,77 +99,107 @@ function Dashboard() {
           </div>
         </div>
 
-        
-        <div className="stats-grid">
-
-          <div className="stat-card">
-            <h2>12</h2>
-            <p>Total Scans</p>
+        {loading ? (
+          <div className="dashboard-info">
+            <h2>Loading dashboard...</h2>
           </div>
+        ) : (
+          <>
+            <div className="stats-grid">
+              <div className="stat-card">
+                <h2>{totalScans}</h2>
+                <p>Total Scans</p>
+              </div>
 
-          <div className="stat-card">
-            <h2>82%</h2>
-            <p>Skin Health Score</p>
-          </div>
+              <div className="stat-card">
+                <h2>{skinHealthScore}%</h2>
+                <p>Skin Health Score</p>
+              </div>
 
-          <div className="stat-card">
-            <h2>4</h2>
-            <p>Appointments</p>
-          </div>
+              <div className="stat-card">
+                <h2>{averageConfidence}%</h2>
+                <p>Average AI Confidence</p>
+              </div>
 
-          <div className="stat-card">
-            <h2>2</h2>
-            <p>Doctor Consultations</p>
-          </div>
+              <div className="stat-card">
+                <h2>{appointments.length}</h2>
+                <p>Appointments</p>
+              </div>
+            </div>
 
-        </div>
+            <div className="activity-section">
+              <div className="activity-card">
+                <h3>Recent Scan</h3>
 
-        
-        <div className="activity-section">
+                {latestScan ? (
+                  <>
+                    <p>
+                      {latestScan.condition} detected with{" "}
+                      {latestScan.confidence}% confidence.
+                    </p>
 
-          <div className="activity-card">
-            <h3>Recent Scan</h3>
+                    <span>{latestScan.severity} Severity</span>
+                  </>
+                ) : (
+                  <>
+                    <p>No scan completed yet.</p>
+                    <span>Start your first scan</span>
+                  </>
+                )}
+              </div>
 
-            <p>
-              Acne / Pimple-like condition detected on forehead region.
-            </p>
+              <div className="activity-card">
+                <h3>Recent Appointment</h3>
 
-            <span>Mild Severity</span>
-          </div>
+                {latestAppointment ? (
+                  <>
+                    <p>
+                      Appointment booked with {latestAppointment.doctorName}.
+                    </p>
 
-          <div className="activity-card">
-            <h3>Recent Appointment</h3>
+                    <span>
+                      {latestAppointment.date} • {latestAppointment.time}
+                    </span>
+                  </>
+                ) : (
+                  <>
+                    <p>No appointment booked yet.</p>
+                    <span>Find a dermatologist</span>
+                  </>
+                )}
+              </div>
 
-            <p>
-              Appointment booked with Dr. Sarah Johnson.
-            </p>
+              <div className="activity-card">
+                <h3>AI Suggestions</h3>
 
-            <span>Tomorrow • 11:30 AM</span>
-          </div>
+                {latestScan?.suggestions?.length > 0 ? (
+                  <>
+                    <p>{latestScan.suggestions[0]}</p>
+                    <span>Based on latest scan</span>
+                  </>
+                ) : (
+                  <>
+                    <p>
+                      Complete a skin scan to receive personalized AI
+                      suggestions.
+                    </p>
+                    <span>No suggestions yet</span>
+                  </>
+                )}
+              </div>
+            </div>
+          </>
+        )}
 
-          <div className="activity-card">
-            <h3>AI Suggestions</h3>
-
-            <p>
-              Maintain hydration and avoid touching affected areas frequently.
-            </p>
-
-            <span>Updated 2 hours ago</span>
-          </div>
-
-        </div>
-
-        {/* DISCLAIMER */}
         <div className="dashboard-info">
           <h2>Health Reminder</h2>
 
           <p>
-            DermaCure AI provides educational skin screening support only.
-            It does not replace professional medical diagnosis.
-            Please consult a dermatologist for serious symptoms.
+            DermaCure AI provides educational skin screening support only. It
+            does not replace professional medical diagnosis. Please consult a
+            dermatologist for serious symptoms.
           </p>
         </div>
-
       </div>
     </>
   );
